@@ -19,7 +19,7 @@ const Input = ({
            
         </label>
        }
-         <input className={`shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${className}`} value={value}  onChange={onChange} type={type}  id={name} placeholder={placeholder} required={isRequired} />
+         <input className={`shadow appearance-none border  w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${className}`} value={value}  onChange={onChange} type={type}  id={name} placeholder={placeholder} required={isRequired} />
     </div>
   )
 }

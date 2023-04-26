@@ -8,10 +8,14 @@ const app =express()
 // import schemas
 const Users =require('./models/userSchema')
 
-
+const Post =require('./models/postSchema')
 
 // connect to db
 require('./db/connection') 
+
+
+// Import MiddleWare
+const authenticate =require('./middleware/auth')
 app.use(bodyParser.json());
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
@@ -88,6 +92,31 @@ app.post('/api/login',async (req,res)=>{
            
 
         }
+    }
+})
+
+app.post('/api/new-post',authenticate,async(req,res)=>{
+    try{
+        const{caption,desc,url}=req.body
+        const{user}=req
+        if(!caption ||!desc|| !url)
+        {
+            res.status(400).send('Please fill all the fields')
+        }
+        const createPost= new Post({
+
+            caption, 
+            description:desc,
+            image:url,
+            user:user
+             
+        })
+        await  createPost.save()
+        res.status(200).send('Create post Successfully')
+
+    }
+    catch(error){
+        res.status(500).send('Error' + error) 
     }
 })
 app.listen(port,()=>{

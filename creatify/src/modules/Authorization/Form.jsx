@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Button from '../../myComponent/button'
-import Input from '../../myComponent/input'
+import Button from '../../myComponent/Button'
+import Input from '../../myComponent/Input'
 import { useNavigate } from 'react-router-dom'
 const Form = ({
   isSignInPage=false
@@ -41,11 +41,11 @@ const Form = ({
                 <form onSubmit={(e)=>handleSubmit(e)}>
                   {
                     !isSignInPage && 
-                    <Input type='text' label='Username' placeholder='Enter your username' value={data.username} onChange={(e)=>setData({...data,username:e.target.value})} name='username'/>
+                    <Input className='rounded-full' type='text' label='Username' placeholder='Enter your username' value={data.username} onChange={(e)=>setData({...data,username:e.target.value})} name='username'/>
                   }
-                  <Input type='email' name='email' placeholder='Enter your email' value={data.email} onChange={(e)=>setData({...data,email:e.target.value})}  label='Email' />
-                  <Input type='password' name='password' placeholder='Enter your password' value={data.password} onChange={(e)=>setData({...data,password:e.target.value})} label='Password' />
-                  <Button label={isSignInPage?'Sign in':'Register'} />
+                  <Input className='rounded-full' type='email' name='email' placeholder='Enter your email' value={data.email} onChange={(e)=>setData({...data,email:e.target.value})}  label='Email' />
+                  <Input className='rounded-full' type='password' name='password' placeholder='Enter your password' value={data.password} onChange={(e)=>setData({...data,password:e.target.value})} label='Password' />
+                  <Button className="bg-[#F00F51] hover:bg-[#d20d48]" label={isSignInPage?'Sign in':'Register'} />
                 </form>
               <div className='cursor-pointer' onClick={()=>navigate(`${isSignInPage?'/account/signup':'/account/signin'}`)}>{isSignInPage?"Don't have an account? Sign up":'Have an account? Log in'}</div>
           </div>

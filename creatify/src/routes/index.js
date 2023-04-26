@@ -2,6 +2,7 @@ import React from 'react'
 import Home from '../modules/Home'
 import Form from '../modules/Authorization'
 import {Navigate,Route,Routes as Router} from 'react-router-dom'
+import CreatePost from '../modules/CreatePost'
 const PrivateRoute=({children})=>{
     const isUserLoggedIn= window.localStorage.getItem('user:token') || false
     const isFormPages = window.location.pathname.includes('account')
@@ -40,6 +41,13 @@ const Routes = () => {
             name:'sign up',
             path:'/account/signup',
             component:<Form/>
+
+        },
+        {
+            id:4,
+            name:'create post',
+            path:'/new-post',
+            component:<CreatePost/>
 
         }
     ]

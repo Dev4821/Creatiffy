@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {ReactComponent as Avatar} from '../../assets/avatar.svg'
-import Input from '../../myComponent/input'
-import Button from '../../myComponent/button'
+import Input from '../../myComponent/Input'
+import Button from '../../myComponent/Button'
 import Post from './post'
 
 import {stats} from './data'
+import {useNavigate} from 'react-router-dom'
 const Home = () => {
+  const navigate =useNavigate()
+ 
   return (
     <div className='h-screen bg-[#7f989f] flex overflow-hidden'>
     <div className='w-[20%] bg-white flex flex-col'>
@@ -52,17 +55,17 @@ const Home = () => {
     <div className='w-[60%] overflow-scroll n-full scrollbar-hide'>
     <div className='h-[75px] bg-white border-l flex justify-evenly items-center pt-2 sticky top-0 shadow-sm'>
       <div className='flex justify-center items-center'>
-        <Input placeholder='Enter your search'/>
-        <Button label='search' className='mb-4 wl-4'/>
+        <Input  placeholder='Enter your search'/>
+        <Button label='search' className=' wl-4 bg-[#F00F51] hover:bg-[#d20d48] mb-4'/>
       </div>
-      <Button label='Create New Post' className='rounded-lg bg-red-400 hover:bg-red-500 mb-4'/>
+      <Button label='Create New Post' className='bg-[#F00F51] hover:bg-[#d20d48] mb-4' onClick={()=>navigate('/new-post')}/>
       {
 
       }
     </div>
       {
-        [1,2,3,4,5].map(()=>{
-          return(<Post/>)
+        [1,2,3,4,5].map((index)=>{
+          return(<Post key={index}/>)
         })
       }
      
