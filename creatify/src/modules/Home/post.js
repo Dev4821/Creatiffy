@@ -1,15 +1,43 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as Avatar } from "../../assets/avatar.svg";
-import CommentDialog from './CommentDialog';
+import CommentDialog from "./CommentDialog";
 
 const Post = (props) => {
+  const { likes, loggedInUser } = props;
+  let likesArray = [];
+  likes.map(like => {
+    likesArray.push(like.uId);
+  })
+  console.log(loggedInUser,likesArray,likesArray.includes(loggedInUser))
   const navigate = useNavigate();
   const [commentDialog, setCommentDialog] = useState(false);
-
+  const [like, setLike] = useState(likesArray.includes(loggedInUser));
+  const [nlike, setnlike] = useState(likesArray.length);
   const handleCommentDialog = (value) => {
     setCommentDialog(value);
-  }
+  };
+
+  const handlelike = async (e) => {
+    e.preventDefault();
+
+    console.log(like);
+    const response = await fetch("http://localhost:8000/api/like", {
+      method: "POST",
+      headers: {
+        "content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("user:token")}`,
+      },
+      body: JSON.stringify({
+        like: !like,
+        postId: props.postId,
+      }),
+    });
+    const likedata = await response.json();
+    setnlike(likedata.length);
+    setLike(!like);
+
+  };
 
   return (
     <div className="bg-white w-[80%]  mx-auto mt-32">
@@ -38,14 +66,27 @@ const Post = (props) => {
       <div className="mx-10 ">{props.description}</div>
       <div className="border-b">
         <div className="flex justify-evenly my-5 ">
-          <div>10.5k likes</div>
-          <div className='commentbutton' onClick={() => handleCommentDialog(true)}>
+          <div onClick={(e) => {
+            handlelike(e);
+          }}>
+            {like ? <span>❤️</span> : <span>🖤</span>}
+            like:{nlike}
+          </div>
+          <div
+            className="commentbutton"
+            onClick={() => handleCommentDialog(true)}
+          >
             Comments
           </div>
           <div>10.5k shares</div>
         </div>
       </div>
-      <CommentDialog open={commentDialog} handleCommentDialog={handleCommentDialog}/>
+
+      <CommentDialog
+        open={commentDialog}
+        postid={props.postId}
+        handleCommentDialog={handleCommentDialog}
+      />
     </div>
   );
 };

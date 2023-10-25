@@ -1,0 +1,25 @@
+
+.dialogTitle {
+    background-color: lightblue;
+    color: white;
+  }
+  
+  .dialogContent {
+    width: 400px;
+  }
+  
+  .dialogActions {
+    background-color: lightblue;
+  }
+  
+  .button {
+    color: white;
+    transition: background-color 0.3s ease; 
+  }
+  .button:hover {
+    background-color: rgb(14, 121, 163); 
+  }
+  .textField{
+
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2) ;
+  }

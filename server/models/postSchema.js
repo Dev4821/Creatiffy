@@ -3,7 +3,12 @@ const mongoose= require('mongoose');
 const commentSchema = new mongoose.Schema({
     uId: String,
     comment: String,
+    username:String,
   });
+
+const likesSchema = new mongoose.Schema({
+    uId: String,
+})
 
 const userSchema=new mongoose.Schema({
     caption:{
@@ -29,9 +34,7 @@ const userSchema=new mongoose.Schema({
         required: true
     },
     comments: [commentSchema],
-    likes: {
-        type: Number,
-    },
+    likes: [likesSchema],
 })
 const Post= new mongoose.model("POST",userSchema);
 module.exports=Post;

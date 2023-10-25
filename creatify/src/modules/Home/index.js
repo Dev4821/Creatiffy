@@ -31,8 +31,9 @@ const Home = () => {
     localStorage.removeItem("user:token");
     navigate('/account/signin');
   }
-
-  const { username = "", email = "" } = user;
+// console.log(user)
+  const { username = "", email = "", _id = "" } = user;
+  const activeUserId = _id;
   return (
     <div className="h-screen bg-[#7f989f] flex overflow-hidden">
       <div className="w-[20%] bg-white flex flex-col">
@@ -97,14 +98,17 @@ const Home = () => {
           {}
         </div>
         {data.map(
-          ({ _id, caption = "", description = "", image = "", user = {} }) => {
+          ({ _id, caption = "", description = "", image = "", user = {}, likes=[] }) => {
             return (
               <Post
                 url={image}
                 key={_id}
+                postId={_id}
                 caption={caption}
                 description={description}
                 user={user}
+                loggedInUser={activeUserId}
+                likes={likes}
               />
             );
           }

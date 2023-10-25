@@ -82,9 +82,10 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-app.post("/api/new-post", authenticate, async (req, res) => {
+app.post("/api/new-post",authenticate, async (req, res) => {
   try {
-    const { caption, desc, url, likes } = req.body;
+    const { caption, desc, url } = req.body;
+    console.log(caption, desc, url)
     const { user } = req;
     if (!caption || !desc || !url) {
       res.status(400).send("Please fill all the fields");
@@ -94,9 +95,10 @@ app.post("/api/new-post", authenticate, async (req, res) => {
       description: desc,
       image: url,
       user,
-      likes,
     });
-    await createPost.save();
+    console.log(createPost)
+    const result = await createPost.save();
+    console.log(result)
     res.status(200).send("Create post Successfully");
   } catch (error) {
     res.status(500).send("Error" + error);
@@ -130,40 +132,84 @@ app.get("/api/posts", authenticate, async (req, res) => {
   try {
     const { user } = req;
     const posts = await Post.find().populate("user", "_id username email");
+    
     res.status(200).json({ posts, user });
   } catch (error) {
     res.status(200).send(error);
   }
 });
+app.post("/api/comment", authenticate, async (req, res) => {
+  try {
+    const { user } = req;
+    const { comment, postId } = req.body;
+    const inpost = await Post.findById(postId);
+    console.log(
+      "============================================================",
+      inpost
+    );
+    if (!inpost) {
+      res.send("not send");
+    } else {
+      if (comment !== undefined || comment != "") {
+        console.log();
+        const newComment = {
+          uId: user._id,
+          comment: comment,
+          username: user.username,
+        };
+        inpost.comments.push(newComment);
+        console.log(inpost.comments);
+
+        await inpost.save();
+        res.send(inpost.comments);
+      }
+    }
+  } catch (er) {
+    console.log(er);
+    res.send(er);
+  }
+});
+
+app.post("/api/like", authenticate, async (req, res) => {
+  try {
+    const { user } = req;
+    const { like, postId } = req.body;
+    if (like === undefined || postId === undefined)
+    {
+      res.send()
+    }
+    const feedPost = await Post.findById(postId);
+    console.log(like);
+    if (!feedPost) {
+      res.send("not FOUND");
+    } else {
+      if (like) {
+        const newLike = {
+          uId: user._id,
+        };
+        feedPost.likes.push(newLike);
+        await feedPost.save();
+      } else {
+        const _id = user._id.toString();
+        const indexToRemove = feedPost.likes.findIndex(
+          (likeItem) => likeItem.uId === _id
+        );
+        console.log(indexToRemove,_id)
+        if (indexToRemove !== -1) {
+          feedPost.likes.splice(indexToRemove, 1);
+        }
+
+        await feedPost.save();
+      }
+      console.log(feedPost.likes);
+      res.json(feedPost.likes);
+    }
+  } catch (er) {
+    res.send(er);
+  }
+});
+
 app.listen(port, () => {
   console.log("Server is running");
 });
 
-app.post("/api/comment", async (req, res) => {
-  try {
-    const { comment, userId,postId } = req.body;
-    const insertComment = await Post.findByIdAndUpdate(
-      postId, // Find the post by its _id
-      {
-        $push: {
-          comments: {
-            uId: userId,
-            comment
-          }
-        }
-      },
-      { new: true }, // To return the updated document
-      (err, updatedPost) => {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log('Comment added to the post:', updatedPost);
-        }
-      }
-    );
-    res.send(insertComment);
-  }
-  catch (er) {
-    res.send(er);
-  }
-});
