@@ -2,15 +2,15 @@ const jwt = require('jsonwebtoken');
 const Users=require('../models/userSchema')
 const authenticate =async(req,res,next)=>{
     try{
-      console.log(req.headers,'headers');
-      const {autorization=''} =req.headers;
-      
-      
-
-
-      const token = req.headers.autorization.split('Bearer ')[1];
      
-      if(!autorization && !token )
+      const {authorization=''} =req.headers;
+      
+      
+
+
+      const token = req.headers.authorization.split('Bearer ')[1];
+     
+      if(!authorization && !token )
       {
         res.status(401).send('Invalid Token')
       }

@@ -45,7 +45,7 @@ const Form = ({
                   }
                   <Input className='rounded-full' type='email' name='email' placeholder='Enter your email' value={data.email} onChange={(e)=>setData({...data,email:e.target.value})}  label='Email' />
                   <Input className='rounded-full' type='password' name='password' placeholder='Enter your password' value={data.password} onChange={(e)=>setData({...data,password:e.target.value})} label='Password' />
-                  <Button className="bg-[#F00F51] hover:bg-[#d20d48]" label={isSignInPage?'Sign in':'Register'} />
+                  <Button className="bg-[#F00F51] hover:bg-[#d20d48] rounded-full" label={isSignInPage?'Sign in':'Register'} />
                 </form>
               <div className='cursor-pointer' onClick={()=>navigate(`${isSignInPage?'/account/signup':'/account/signin'}`)}>{isSignInPage?"Don't have an account? Sign up":'Have an account? Log in'}</div>
           </div>

@@ -43,13 +43,14 @@ const CreatePost = () => {
         method:'POST',
         headers:{
           'content-Type':'application/json',
-          Autorization:`Bearer ${localStorage.getItem('user:token')}`
+          Authorization:`Bearer ${localStorage.getItem('user:token')}`
         },
         body:JSON.stringify({
             caption:data.caption,
             desc:data.desc,
             url: secure_url,
-            userId:"6443b4374b10e0b434e5c5aa"
+            userId:"6443b4374b10e0b434e5c5aa",
+            likes: 100,
         })
       });
       if(response.status===200){
